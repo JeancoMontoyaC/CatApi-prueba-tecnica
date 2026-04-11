@@ -1,11 +1,9 @@
 package com.app.catapi.infrastructure.externalApi;
 
 import com.app.catapi.domain.entity.Breed;
-import com.app.catapi.domain.entity.Image;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.domain.exception.BreedNotFoundException;
 import com.app.catapi.domain.exception.ExternalServiceException;
-import com.app.catapi.domain.exception.ImageNotFoundException;
 import com.app.catapi.domain.ports.BreedRepository;
 import com.app.catapi.infrastructure.mapper.PageResponseMapper;
 import lombok.AllArgsConstructor;
@@ -52,6 +50,37 @@ public class BreedRepositoryImp implements BreedRepository {
                             .path("/breeds")
                             .queryParam("page", page)
                             .queryParam("limit", size)
+                            .build();
+                    return uri;
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, response -> {
+                            log.error("Service error");
+                            return Mono.error(new ExternalServiceException("Error on external Api"));
+                        }
+                )
+                .onStatus(HttpStatusCode::is5xxServerError, response -> {
+                            log.error("Service error");
+                            return Mono.error(new ExternalServiceException("Error on external Api"));
+                        }
+                )
+                .toEntityList(Breed.class)
+                .map(response -> pageResponseMapper.toBreedResponse(
+                        response, size, page
+                ))
+                .block();
+    }
+
+    @Override
+    public PageResponse<Breed> getBreedByQuery(String query, int page, int size) {
+        log.info("Fetching breeds - page: {}, size: {} with query {}", page, size, query);
+        return externalApiClient.get()
+                .uri(uriBuilder -> {
+                    URI uri =  uriBuilder
+                            .path("/breeds/search")
+                            .queryParam("page", page)
+                            .queryParam("limit", size)
+                            .queryParam("q", query)
                             .build();
                     return uri;
                 })

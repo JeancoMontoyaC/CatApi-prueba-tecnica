@@ -3,6 +3,7 @@ package com.app.catapi.infrastructure.controller;
 import com.app.catapi.application.dto.breed.BreedDto;
 import com.app.catapi.application.dto.pageResponse.PageResponseDto;
 import com.app.catapi.application.usecase.GetBreedByIdUseCase;
+import com.app.catapi.application.usecase.GetBreedByQueryUseCase;
 import com.app.catapi.application.usecase.GetBreedsUseCase;
 import com.app.catapi.domain.entity.Breed;
 import com.app.catapi.domain.entity.PageResponse;
@@ -25,6 +26,7 @@ public class BreedController {
     private final GetBreedsUseCase getBreedsUseCase;
     private final PageResponseMapper pageResponseMapper;
     private final BreedMapper breedMapper;
+    private final GetBreedByQueryUseCase getBreedByQueryUseCase;
 
     @GetMapping("/{id}")
     public ResponseEntity<BreedDto> getBreedById(@PathVariable String id) {
@@ -56,4 +58,17 @@ public class BreedController {
         return ResponseEntity.ok(pageResponseDto);
 
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<PageResponseDto<BreedDto>> getBreedsByQuery(
+            @RequestParam String query,
+            @PageableDefault(size = 10, page = 0) Pageable pageable){
+        log.info("Getting breeds by query {}", query);
+        PageResponse<Breed> pageResponse = getBreedByQueryUseCase.execute(query,
+                pageable.getPageSize(), pageable.getPageNumber());
+        PageResponseDto<BreedDto> pageResponseDto = pageResponseMapper.toBreedPageResponseDto(pageResponse);
+        log.info("Breeds found {}", pageResponseDto.getContent());
+        return ResponseEntity.ok(pageResponseDto);
+    }
+
 }

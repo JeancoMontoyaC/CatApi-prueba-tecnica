@@ -23,21 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImageController {
     private final GetImagesByBreedIdUseCase getImagesByBreedIdUseCase;
     private final PageResponseMapper pageResponseMapper;
-    @GetMapping("/search")
+    @GetMapping()
     public ResponseEntity<PageResponseDto<ImageDto>> getImagesByBreedId(
-            @RequestParam String breedId,
+            @RequestParam String breed_id,
             @PageableDefault(size = 10, page = 0) Pageable pageable){
-        log.info("Getting images by breed id {}", breedId);
+        log.info("Getting images by breed id {}", breed_id);
 
-        if (breedId == null || breedId.isEmpty()) {
+        if (breed_id == null || breed_id.isEmpty()) {
             log.warn("Invalid breed id");
             return ResponseEntity.notFound().build();
         }
-        PageResponse<Image> pageResponse = getImagesByBreedIdUseCase.execute(breedId, pageable);
+        PageResponse<Image> pageResponse = getImagesByBreedIdUseCase.execute(breed_id, pageable);
 
         PageResponseDto<ImageDto> pageResponseDto = pageResponseMapper.toImagePageResponseDto(pageResponse);
         log.info("Images found {}", pageResponseDto.getContent());
         return ResponseEntity.ok(pageResponseDto);
-
     }
 }
