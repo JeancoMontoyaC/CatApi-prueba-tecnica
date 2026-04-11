@@ -19,16 +19,23 @@ public class WebClientConfig {
     @Value("${thecatapi.base-url}")
     private String baseUrl;
 
+    @Value("${thecatapi.api-key:}")
+    private String apiKey;
+
     @Bean
     public WebClient webClient() {
-        return WebClient.builder()
+        WebClient.Builder builder = WebClient.builder()
                 .baseUrl(baseUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .clientConnector(new ReactorClientHttpConnector(
-                        HttpClient.create()
-                                .responseTimeout(Duration.ofSeconds(5))
-                ))
-                .build();
+                        HttpClient.create().responseTimeout(Duration.ofSeconds(5))
+                ));
+
+
+        if (!apiKey.isBlank()) {
+            builder.defaultHeader("x-api-key", apiKey);
+        }
+
+        return builder.build();
     }
 
 }
