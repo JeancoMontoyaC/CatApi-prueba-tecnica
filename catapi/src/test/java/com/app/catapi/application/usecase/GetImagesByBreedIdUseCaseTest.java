@@ -1,5 +1,6 @@
 package com.app.catapi.application.usecase;
 
+import com.app.catapi.application.usecase.image.GetImagesByBreedIdUseCase;
 import com.app.catapi.domain.entity.Image;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.domain.ports.ImageRepository;

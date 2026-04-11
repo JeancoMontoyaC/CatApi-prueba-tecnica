@@ -1,4 +1,4 @@
-package com.app.catapi.application.usecase;
+package com.app.catapi.application.usecase.breed;
 
 import com.app.catapi.domain.entity.Breed;
 import com.app.catapi.domain.entity.PageResponse;

@@ -2,9 +2,9 @@ package com.app.catapi.infrastructure.controller;
 
 import com.app.catapi.application.dto.breed.BreedDto;
 import com.app.catapi.application.dto.pageResponse.PageResponseDto;
-import com.app.catapi.application.usecase.GetBreedByIdUseCase;
-import com.app.catapi.application.usecase.GetBreedByQueryUseCase;
-import com.app.catapi.application.usecase.GetBreedsUseCase;
+import com.app.catapi.application.usecase.breed.GetBreedByIdUseCase;
+import com.app.catapi.application.usecase.breed.GetBreedByQueryUseCase;
+import com.app.catapi.application.usecase.breed.GetBreedsUseCase;
 import com.app.catapi.domain.entity.Breed;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.infrastructure.mapper.BreedMapper;

@@ -1,5 +1,6 @@
 package com.app.catapi.application.usecase;
 
+import com.app.catapi.application.usecase.breed.GetBreedByIdUseCase;
 import com.app.catapi.domain.entity.Breed;
 import com.app.catapi.domain.ports.BreedRepository;
 import org.junit.jupiter.api.DisplayName;

@@ -2,7 +2,7 @@ package com.app.catapi.infrastructure.controller;
 
 import com.app.catapi.application.dto.image.ImageDto;
 import com.app.catapi.application.dto.pageResponse.PageResponseDto;
-import com.app.catapi.application.usecase.GetImagesByBreedIdUseCase;
+import com.app.catapi.application.usecase.image.GetImagesByBreedIdUseCase;
 import com.app.catapi.domain.entity.Image;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.infrastructure.mapper.PageResponseMapper;

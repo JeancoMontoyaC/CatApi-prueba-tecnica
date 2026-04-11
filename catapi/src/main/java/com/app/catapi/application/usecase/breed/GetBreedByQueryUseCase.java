@@ -1,12 +1,10 @@
-package com.app.catapi.application.usecase;
+package com.app.catapi.application.usecase.breed;
 
 import com.app.catapi.domain.entity.Breed;
-import com.app.catapi.domain.entity.Image;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.domain.ports.BreedRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @Component

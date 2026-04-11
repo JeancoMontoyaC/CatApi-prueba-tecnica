@@ -1,5 +1,6 @@
 package com.app.catapi.application.usecase;
 
+import com.app.catapi.application.usecase.breed.GetBreedByQueryUseCase;
 import com.app.catapi.domain.entity.Breed;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.domain.ports.BreedRepository;

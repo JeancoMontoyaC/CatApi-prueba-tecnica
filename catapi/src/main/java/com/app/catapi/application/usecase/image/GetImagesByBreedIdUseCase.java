@@ -1,4 +1,4 @@
-package com.app.catapi.application.usecase;
+package com.app.catapi.application.usecase.image;
 
 import com.app.catapi.domain.entity.Image;
 import com.app.catapi.domain.ports.ImageRepository;
