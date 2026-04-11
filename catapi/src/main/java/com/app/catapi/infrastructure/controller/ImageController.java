@@ -4,7 +4,6 @@ import com.app.catapi.application.dto.image.ImageDto;
 import com.app.catapi.application.dto.pageResponse.PageResponseDto;
 import com.app.catapi.application.usecase.GetImagesByBreedIdUseCase;
 import com.app.catapi.domain.entity.Image;
-import com.app.catapi.infrastructure.mapper.ImageMapper;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.infrastructure.mapper.PageResponseMapper;
 import lombok.AllArgsConstructor;
@@ -36,7 +35,7 @@ public class ImageController {
         }
         PageResponse<Image> pageResponse = getImagesByBreedIdUseCase.execute(breedId, pageable);
 
-        PageResponseDto<ImageDto> pageResponseDto = pageResponseMapper.toPageResponseDto(pageResponse);
+        PageResponseDto<ImageDto> pageResponseDto = pageResponseMapper.toImagePageResponseDto(pageResponse);
         log.info("Images found {}", pageResponseDto.getContent());
         return ResponseEntity.ok(pageResponseDto);
 

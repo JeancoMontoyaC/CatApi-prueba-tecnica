@@ -1,9 +1,13 @@
 package com.app.catapi.infrastructure.externalApi;
 
 import com.app.catapi.domain.entity.Breed;
+import com.app.catapi.domain.entity.Image;
+import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.domain.exception.BreedNotFoundException;
 import com.app.catapi.domain.exception.ExternalServiceException;
+import com.app.catapi.domain.exception.ImageNotFoundException;
 import com.app.catapi.domain.ports.BreedRepository;
+import com.app.catapi.infrastructure.mapper.PageResponseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
@@ -11,11 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 @AllArgsConstructor
 @Service
 @Slf4j
 public class BreedRepositoryImp implements BreedRepository {
     private final WebClient externalApiClient;
+    private final PageResponseMapper pageResponseMapper;
 
     @Override
     public Breed getBreedById(String id) {
@@ -33,6 +40,36 @@ public class BreedRepositoryImp implements BreedRepository {
                         }
                 )
                 .bodyToMono(Breed.class)
+                .block();
+    }
+
+    @Override
+    public PageResponse<Breed> getBreeds(int page, int size) {
+        log.info("Fetching breeds - page: {}, size: {}", page, size);
+        return externalApiClient.get()
+                .uri(uriBuilder -> {
+                    URI uri =  uriBuilder
+                            .path("/breeds")
+                            .queryParam("page", page)
+                            .queryParam("limit", size)
+                            .build();
+                    return uri;
+                })
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, response -> {
+                            log.error("Service error");
+                            return Mono.error(new ExternalServiceException("Error on external Api"));
+                        }
+                )
+                .onStatus(HttpStatusCode::is5xxServerError, response -> {
+                            log.error("Service error");
+                            return Mono.error(new ExternalServiceException("Error on external Api"));
+                        }
+                )
+                .toEntityList(Breed.class)
+                .map(response -> pageResponseMapper.toBreedResponse(
+                        response, size, page
+                ))
                 .block();
     }
 }

@@ -5,6 +5,7 @@ import com.app.catapi.domain.exception.ExternalServiceException;
 import com.app.catapi.domain.exception.ImageNotFoundException;
 import com.app.catapi.domain.ports.ImageRepository;
 import com.app.catapi.domain.entity.PageResponse;
+import com.app.catapi.infrastructure.mapper.PageResponseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.net.URI;
 @Slf4j
 public class ImageRepositoryImp implements ImageRepository {
     private final WebClient externalApiClient;
+    private final PageResponseMapper pageResponseMapper;
 
     @Override
     public PageResponse<Image> getImagesByBreedId(String breedId, Pageable pageable) {
@@ -47,7 +49,7 @@ public class ImageRepositoryImp implements ImageRepository {
                         }
                 )
                 .toEntityList(Image.class)
-                .map(response -> PageResponse.buildImagePageResponse(
+                .map(response -> pageResponseMapper.toImagePageResponse(
                         response, pageable.getPageSize(), pageable.getPageNumber()
                 ))
                 .block();

@@ -23,31 +23,31 @@ public class BreedDto {
     private String vetstreetUrl;
     private String vcahospitalsUrl;
 
-    private int indoor;
-    private int lap;
-    private int experimental;
-    private int hairless;
-    private int natural;
-    private int rare;
-    private int rex;
-    private int suppressedTail;
-    private int shortLegs;
-    private int hypoallergenic;
+    private Integer indoor;
+    private Integer lap;
+    private Integer experimental;
+    private Integer hairless;
+    private Integer natural;
+    private Integer rare;
+    private Integer rex;
+    private Integer suppressedTail;
+    private Integer shortLegs;
+    private Integer hypoallergenic;
 
-    private int adaptability;
-    private int affectionLevel;
-    private int childFriendly;
-    private int catFriendly;
-    private int dogFriendly;
-    private int energyLevel;
-    private int grooming;
-    private int healthIssues;
-    private int intelligence;
-    private int sheddingLevel;
-    private int socialNeeds;
-    private int strangerFriendly;
-    private int vocalisation;
-    private int bidability;
+    private Integer adaptability;
+    private Integer affectionLevel;
+    private Integer childFriendly;
+    private Integer catFriendly;
+    private Integer dogFriendly;
+    private Integer energyLevel;
+    private Integer grooming;
+    private Integer healthIssues;
+    private Integer intelligence;
+    private Integer sheddingLevel;
+    private Integer socialNeeds;
+    private Integer strangerFriendly;
+    private Integer vocalisation;
+    private Integer bidability;
 
     private String referenceImageId;
 }

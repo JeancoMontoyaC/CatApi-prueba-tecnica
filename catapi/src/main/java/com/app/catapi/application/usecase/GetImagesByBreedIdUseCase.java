@@ -15,6 +15,7 @@ public class GetImagesByBreedIdUseCase {
     private final ImageRepository imageRepository;
 
     public PageResponse<Image> execute(String breedId, Pageable pageable) {
+        log.info("Received request to get images by breed id {}", breedId);
         return imageRepository.getImagesByBreedId(breedId, pageable);
     }
 }
