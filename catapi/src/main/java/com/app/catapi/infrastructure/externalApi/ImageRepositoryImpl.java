@@ -14,12 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
 @AllArgsConstructor
 @Service
 @Slf4j
-public class ImageRepositoryImp implements ImageRepository {
+public class ImageRepositoryImpl implements ImageRepository {
     private final WebClient externalApiClient;
     private final PageResponseMapper pageResponseMapper;
 

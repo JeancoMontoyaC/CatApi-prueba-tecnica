@@ -33,7 +33,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ImageRepositoryImpTest {
+class ImageRepositoryImplTest {
 
     @Mock
     private WebClient webClient;
@@ -51,7 +51,7 @@ class ImageRepositoryImpTest {
     private WebClient.ResponseSpec responseSpec;
 
     @InjectMocks
-    private ImageRepositoryImp imageRepositoryImp;
+    private ImageRepositoryImpl imageRepositoryImpl;
 
     @Test
     void shouldReturnPageResponse_whenExternalApiSucceeds() {
@@ -78,7 +78,7 @@ class ImageRepositoryImpTest {
                 .thenReturn(expectedResponse);
 
         // Act
-        PageResponse<Image> result = imageRepositoryImp.getImagesByBreedId("beng", pageable);
+        PageResponse<Image> result = imageRepositoryImpl.getImagesByBreedId("beng", pageable);
 
         // Assert
         assertNotNull(result);
@@ -108,7 +108,7 @@ class ImageRepositoryImpTest {
 
         // Act & Assert
         assertThrows(ImageNotFoundException.class,
-                () -> imageRepositoryImp.getImagesByBreedId("invalid_id", pageable));
+                () -> imageRepositoryImpl.getImagesByBreedId("invalid_id", pageable));
     }
 
     @Test
@@ -124,7 +124,7 @@ class ImageRepositoryImpTest {
 
         // Act & Assert
         assertThrows(ExternalServiceException.class,
-                () -> imageRepositoryImp.getImagesByBreedId("beng", pageable));
+                () -> imageRepositoryImpl.getImagesByBreedId("beng", pageable));
     }
 
     private void mockWebClientChain() {
@@ -161,7 +161,7 @@ class ImageRepositoryImpTest {
                 .thenReturn(PageResponse.<Image>builder().content(List.of()).page(2).size(5).build());
 
         // Act
-        imageRepositoryImp.getImagesByBreedId("beng", pageable);
+        imageRepositoryImpl.getImagesByBreedId("beng", pageable);
     }
 
 }

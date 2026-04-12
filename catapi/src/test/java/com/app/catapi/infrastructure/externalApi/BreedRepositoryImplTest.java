@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class BreedRepositoryImpTest {
+class BreedRepositoryImplTest {
 
     @Mock
     private WebClient webClient;
@@ -51,7 +51,7 @@ class BreedRepositoryImpTest {
     private ClientResponse clientResponse;
 
     @InjectMocks
-    private BreedRepositoryImp breedRepositoryImp;
+    private BreedRepositoryImpl breedRepositoryImpl;
 
 
     @Test
@@ -73,7 +73,7 @@ class BreedRepositoryImpTest {
         when(responseSpec.bodyToMono(Breed.class)).thenReturn(Mono.just(expected));
 
         // Act
-        Breed result = breedRepositoryImp.getBreedById("beng");
+        Breed result = breedRepositoryImpl.getBreedById("beng");
 
         // Assert
         assertNotNull(result);
@@ -102,7 +102,7 @@ class BreedRepositoryImpTest {
 
         // Act & Assert
         assertThrows(BreedNotFoundException.class,
-                () -> breedRepositoryImp.getBreedById("invalid"));
+                () -> breedRepositoryImpl.getBreedById("invalid"));
     }
 
     @Test
@@ -126,7 +126,7 @@ class BreedRepositoryImpTest {
 
         // Act & Assert
         assertThrows(ExternalServiceException.class,
-                () -> breedRepositoryImp.getBreedById("beng"));
+                () -> breedRepositoryImpl.getBreedById("beng"));
     }
 
     @Test
@@ -154,7 +154,7 @@ class BreedRepositoryImpTest {
         when(pageResponseMapper.toBreedResponse(any(), eq(10), eq(0))).thenReturn(expected);
 
         // Act
-        PageResponse<Breed> result = breedRepositoryImp.getBreeds(0, 10);
+        PageResponse<Breed> result = breedRepositoryImpl.getBreeds(0, 10);
 
         // Assert
         assertNotNull(result);
@@ -185,7 +185,7 @@ class BreedRepositoryImpTest {
                 .thenReturn(PageResponse.<Breed>builder().content(List.of()).page(1).size(5).build());
 
         // Act
-        breedRepositoryImp.getBreeds(1, 5);
+        breedRepositoryImpl.getBreeds(1, 5);
     }
 
     @Test
@@ -209,7 +209,7 @@ class BreedRepositoryImpTest {
 
         // Act & Assert
         assertThrows(ExternalServiceException.class,
-                () -> breedRepositoryImp.getBreeds(0, 10));
+                () -> breedRepositoryImpl.getBreeds(0, 10));
     }
 
     @Test
@@ -232,7 +232,7 @@ class BreedRepositoryImpTest {
 
         // Act & Assert
         assertThrows(ExternalServiceException.class,
-                () -> breedRepositoryImp.getBreeds(0, 10));
+                () -> breedRepositoryImpl.getBreeds(0, 10));
     }
 
     @Test
@@ -253,7 +253,7 @@ class BreedRepositoryImpTest {
         when(pageResponseMapper.toBreedResponse(any(), eq(10), eq(0))).thenReturn(expected);
 
         // Act
-        PageResponse<Breed> result = breedRepositoryImp.getBreedByQuery("bengal", 0, 10);
+        PageResponse<Breed> result = breedRepositoryImpl.getBreedByQuery("bengal", 0, 10);
 
         // Assert
         assertNotNull(result);
@@ -285,7 +285,7 @@ class BreedRepositoryImpTest {
                 .thenReturn(PageResponse.<Breed>builder().content(List.of()).page(0).size(10).build());
 
         // Act
-        breedRepositoryImp.getBreedByQuery("bengal", 0, 10);
+        breedRepositoryImpl.getBreedByQuery("bengal", 0, 10);
     }
 
     @Test
@@ -309,7 +309,7 @@ class BreedRepositoryImpTest {
 
         // Act & Assert
         assertThrows(ExternalServiceException.class,
-                () -> breedRepositoryImp.getBreedByQuery("bengal", 0, 10));
+                () -> breedRepositoryImpl.getBreedByQuery("bengal", 0, 10));
     }
 }
 

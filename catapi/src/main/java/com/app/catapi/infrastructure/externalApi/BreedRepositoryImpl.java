@@ -18,7 +18,7 @@ import java.net.URI;
 @AllArgsConstructor
 @Service
 @Slf4j
-public class BreedRepositoryImp implements BreedRepository {
+public class BreedRepositoryImpl implements BreedRepository {
     private final WebClient externalApiClient;
     private final PageResponseMapper pageResponseMapper;
 
