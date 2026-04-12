@@ -12,6 +12,8 @@ import com.app.catapi.domain.exception.ImageNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class PageResponseMapperTest {
 
     @Mock
@@ -47,6 +50,26 @@ public class PageResponseMapperTest {
             assertThat(result.getPage()).isEqualTo(0);
             assertThat(result.getSize()).isEqualTo(10);
         }
+
+            @Test
+            void toImagePageResponseDto_shouldMapContentAndPagination() {
+                Image image = Image.builder().id("img1").url("http://img.com").build();
+                ImageDto imageDto = ImageDto.builder().id("img1").url("http://img.com").build();
+
+                PageResponse<Image> pageResponse = PageResponse.<Image>builder()
+                        .content(List.of(image))
+                        .page(2)
+                        .size(5)
+                        .build();
+
+                when(imageMapper.toImageDto(image)).thenReturn(imageDto);
+
+                PageResponseDto<ImageDto> result = pageResponseMapper.toImagePageResponseDto(pageResponse);
+
+                assertThat(result.getPage()).isEqualTo(2);
+                assertThat(result.getSize()).isEqualTo(5);
+                assertThat(result.getContent().get(0).getId()).isEqualTo(imageDto.getId());
+            }
 
         @Test
         void toImagePageResponse_shouldThrow_whenBodyIsNull() {
@@ -77,6 +100,26 @@ public class PageResponseMapperTest {
             assertThat(result.getPage()).isEqualTo(0);
             assertThat(result.getSize()).isEqualTo(10);
         }
+
+            @Test
+            void toBreedPageResponseDto_shouldMapContentAndPagination() {
+                Breed breed = Breed.builder().id("1").name("Siamese").build();
+                BreedDto breedDto = BreedDto.builder().id("1").name("Siamese").build();
+
+                PageResponse<Breed> pageResponse = PageResponse.<Breed>builder()
+                        .content(List.of(breed))
+                        .page(1)
+                        .size(20)
+                        .build();
+
+                when(breedMapper.toBreedDto(breed)).thenReturn(breedDto);
+
+                PageResponseDto<BreedDto> result = pageResponseMapper.toBreedPageResponseDto(pageResponse);
+
+                assertThat(result.getPage()).isEqualTo(1);
+                assertThat(result.getSize()).isEqualTo(20);
+                assertThat(result.getContent().get(0).getId()).isEqualTo(breedDto.getId());
+            }
 
         @Test
         void toBreedResponse_shouldThrow_whenBodyIsNull() {
