@@ -3,6 +3,7 @@ package com.app.catapi.application.usecase.user;
 import com.app.catapi.domain.entity.user.Token;
 import com.app.catapi.domain.entity.user.User;
 import com.app.catapi.domain.entity.user.UserRole;
+import com.app.catapi.domain.exception.EmailAlreadyUsedException;
 import com.app.catapi.domain.ports.AuthenticationPort;
 import com.app.catapi.domain.ports.UserRepository;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class RegisterUserUseCase {
         boolean existByEmail = userRepository.existByEmail(user.getEmail());
 
         if (existByEmail) {
-            throw new RuntimeException("Email already used");
+            throw new EmailAlreadyUsedException("Email already used");
         }
 
         String encoded =  passwordEncoder.encode(user.getPassword());

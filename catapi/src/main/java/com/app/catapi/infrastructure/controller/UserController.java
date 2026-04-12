@@ -8,6 +8,7 @@ import com.app.catapi.domain.entity.user.Token;
 import com.app.catapi.domain.entity.user.User;
 import com.app.catapi.infrastructure.dataBase.mapper.TokenMapper;
 import com.app.catapi.infrastructure.security.JwtService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class UserController {
     private final TokenMapper tokenMapper;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<TokenDto> loginUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> loginUser(@RequestBody @Valid LoginDto loginDto) {
         log.info("loginUser into server");
 
         Token token = loginUserUseCase.execute(loginDto);
@@ -37,8 +38,9 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<TokenDto> registerUser(@RequestBody User user) {
+    public ResponseEntity<TokenDto> registerUser(@RequestBody @Valid User user) {
 
+        log.info("RegisterUser into server");
         Token token = registerUserUseCase.execute(user);
         TokenDto tokenDto = tokenMapper.toTokenDto(token);
         return ResponseEntity.ok(tokenDto);

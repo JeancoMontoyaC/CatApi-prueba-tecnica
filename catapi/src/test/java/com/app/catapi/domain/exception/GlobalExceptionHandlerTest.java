@@ -1,19 +1,26 @@
 package com.app.catapi.domain.exception;
 
+import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
 
+import javax.naming.AuthenticationException;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class GlobalExceptionHandlerTest {
 
     private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
-
+    @InjectMocks
+    private GlobalExceptionHandler globalExceptionHandler;
     @Test
     @DisplayName("Should return 404 when BreedNotFoundException is thrown")
     void shouldReturn404_whenBreedNotFoundExceptionIsThrown() {
@@ -55,4 +62,28 @@ class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
         assertEquals("Error on external Api", response.getBody());
     }
+
+    @Test
+    void handleEmailAlreadyUsed_shouldReturn409_withMessage() {
+        EmailAlreadyUsedException ex = new EmailAlreadyUsedException("Email already used");
+
+        ResponseEntity<String> response = globalExceptionHandler.handleEmailAlreadyUsed(ex);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(response.getBody()).isEqualTo("Email already used");
+    }
+
+    @Test
+    void forbidden_shouldReturnErrorMessage_whenJwtException() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setRequestURI("/api/v1/cats");
+        JwtException ex = new JwtException("Invalid token");
+
+        ErrorMessage result = globalExceptionHandler.forbidden(request, ex);
+
+        assertThat(result.getMessage()).isEqualTo("Invalid token");
+        assertThat(result.getException()).isEqualTo("JwtException");
+        assertThat(result.getPath()).isEqualTo("/api/v1/cats");
+    }
+
 }
