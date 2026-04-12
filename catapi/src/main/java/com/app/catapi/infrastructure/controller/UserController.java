@@ -2,6 +2,7 @@ package com.app.catapi.infrastructure.controller;
 
 import com.app.catapi.application.dto.user.LoginDto;
 import com.app.catapi.application.dto.user.TokenDto;
+import com.app.catapi.application.dto.user.UserDto;
 import com.app.catapi.application.usecase.user.LoginUserUseCase;
 import com.app.catapi.application.usecase.user.RegisterUserUseCase;
 import com.app.catapi.domain.entity.user.Token;
@@ -42,7 +43,7 @@ public class UserController {
 
     @PostMapping("/auth/register")
     @Operation(summary = "Register", description = "Creates a new user account and returns a JWT token. All fields are required, email must be valid and password must be at least 8 characters")
-    public ResponseEntity<TokenDto> registerUser(@RequestBody @Valid User user) {
+    public ResponseEntity<TokenDto> registerUser(@RequestBody @Valid UserDto user) {
 
         log.info("RegisterUser into server");
         Token token = registerUserUseCase.execute(user);

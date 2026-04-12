@@ -1,5 +1,6 @@
 package com.app.catapi.application.usecase;
 
+import com.app.catapi.application.dto.user.UserDto;
 import com.app.catapi.application.usecase.user.RegisterUserUseCase;
 import com.app.catapi.domain.entity.user.Token;
 import com.app.catapi.domain.entity.user.User;
@@ -34,8 +35,8 @@ class RegisterUserUseCaseTest {
     @Mock
     private AuthenticationPort authenticationPort;
 
-    private User buildUser() {
-        return User.builder()
+    private UserDto buildUser() {
+        return UserDto.builder()
                 .firstName("John")
                 .lastName("Doe")
                 .email("john@mail.com")
@@ -45,7 +46,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     void execute_shouldReturnToken_whenUserIsNew() {
-        User user = buildUser();
+        UserDto user = buildUser();
 
         when(userRepository.existByEmail(user.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
@@ -58,7 +59,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     void execute_shouldThrow_whenEmailAlreadyExists() {
-        User user = buildUser();
+        UserDto user = buildUser();
 
         when(userRepository.existByEmail(user.getEmail())).thenReturn(true);
 
@@ -72,7 +73,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     void execute_shouldEncodePassword_beforeSaving() {
-        User user = buildUser();
+        UserDto user = buildUser();
 
         when(userRepository.existByEmail(user.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
@@ -87,7 +88,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     void execute_shouldSaveUser_withRoleUser() {
-        User user = buildUser();
+        UserDto user = buildUser();
 
         when(userRepository.existByEmail(user.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
@@ -102,7 +103,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     void execute_shouldCallAuthenticate_withOriginalPassword() {
-        User user = buildUser();
+        UserDto user = buildUser();
 
         when(userRepository.existByEmail(user.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(any())).thenReturn("encodedPassword");

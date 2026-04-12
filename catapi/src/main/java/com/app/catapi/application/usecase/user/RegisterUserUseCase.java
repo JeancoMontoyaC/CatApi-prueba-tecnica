@@ -1,5 +1,6 @@
 package com.app.catapi.application.usecase.user;
 
+import com.app.catapi.application.dto.user.UserDto;
 import com.app.catapi.domain.entity.user.Token;
 import com.app.catapi.domain.entity.user.User;
 import com.app.catapi.domain.entity.user.UserRole;
@@ -20,28 +21,28 @@ public class RegisterUserUseCase {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationPort authenticationPort;
 
-    public Token execute(User user) {
-        log.info("Received request to register user with email {}", user.getEmail());
+    public Token execute(UserDto userDto) {
+        log.info("Received request to register user with email {}", userDto.getEmail());
 
-        boolean existByEmail = userRepository.existByEmail(user.getEmail());
+        boolean existByEmail = userRepository.existByEmail(userDto.getEmail());
 
         if (existByEmail) {
             throw new EmailAlreadyUsedException("Email already used");
         }
 
-        String encoded =  passwordEncoder.encode(user.getPassword());
+        String encoded =  passwordEncoder.encode(userDto.getPassword());
 
-        User userToSave = User.builder()
-                .firstName(user.getFirstName())
+        User user = User.builder()
+                .firstName(userDto.getFirstName())
                 .role(UserRole.USER)
-                .lastName(user.getLastName())
-                .email(user.getEmail())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
                 .password(encoded)
                 .build();
 
-        userRepository.registerUser(userToSave);
+        userRepository.registerUser(user);
 
-        String token = authenticationPort.authenticate(user.getEmail(), user.getPassword());
+        String token = authenticationPort.authenticate(userDto.getEmail(), userDto.getPassword());
         return new Token(token);
     }
 }
