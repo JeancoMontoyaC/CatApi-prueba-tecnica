@@ -11,8 +11,8 @@
 	<groupId>com.app</groupId>
 	<artifactId>catapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>cat_api_app</name>
+	<description>Prueba tecnica</description>
 	<url/>
 	<licenses>
 		<license/>

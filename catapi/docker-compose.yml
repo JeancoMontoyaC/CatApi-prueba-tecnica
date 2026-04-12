@@ -1,0 +1,25 @@
+version: '3'
+services:
+  catapi:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      THE_CAT_API_BASE_URL: https://api.thecatapi.com/v1
+      THE_CAT_API_KEY: your_api_key_here
+      SECRET_KEY: 7f3k9mXpQ2nL8vRwYdZsA5cBhJeUiOtGqNmKlPxWrVbCyDfHgJsT4uE6oI1aM0
+      DATA_BASE_URL: jdbc:postgresql://java_db:5432/postgres
+      DATA_BASE_USERNAME: postgres
+      DATA_BASE_PASSWORD: postgres
+    restart: always
+    depends_on:
+      - java_db
+  java_db:
+    image: postgres:latest
+    ports:
+        - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    restart: always
