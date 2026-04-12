@@ -32,13 +32,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleEmailAlreadyUsed(EmailAlreadyUsedException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
-
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({
-            JwtException.class, AuthenticationException.class
-    })
-    @ResponseBody
-    public ErrorMessage forbidden(HttpServletRequest request, Exception exception) {
-        return new ErrorMessage(exception.getMessage(), exception.getClass().getSimpleName(), request.getRequestURI());
-    }
 }

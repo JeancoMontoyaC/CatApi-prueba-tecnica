@@ -73,17 +73,4 @@ class GlobalExceptionHandlerTest {
         assertThat(response.getBody()).isEqualTo("Email already used");
     }
 
-    @Test
-    void forbidden_shouldReturnErrorMessage_whenJwtException() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setRequestURI("/api/v1/cats");
-        JwtException ex = new JwtException("Invalid token");
-
-        ErrorMessage result = globalExceptionHandler.forbidden(request, ex);
-
-        assertThat(result.getMessage()).isEqualTo("Invalid token");
-        assertThat(result.getException()).isEqualTo("JwtException");
-        assertThat(result.getPath()).isEqualTo("/api/v1/cats");
-    }
-
 }
