@@ -2,7 +2,7 @@ package com.app.catapi.infrastructure.dataBase.persistance;
 
 import com.app.catapi.domain.entity.user.User;
 import com.app.catapi.domain.ports.UserRepository;
-import com.app.catapi.infrastructure.dataBase.mapper.UserMapper;
+import com.app.catapi.infrastructure.mapper.UserMapper;
 import com.app.catapi.infrastructure.dataBase.repository.UserJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;

@@ -9,6 +9,9 @@ import com.app.catapi.domain.entity.Breed;
 import com.app.catapi.domain.entity.PageResponse;
 import com.app.catapi.infrastructure.mapper.BreedMapper;
 import com.app.catapi.infrastructure.mapper.PageResponseMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/breeds")
 @AllArgsConstructor
 @Slf4j
+@Tag(name = "Breeds", description = "Retrieve and search cat breeds from TheCatAPI")
+@SecurityRequirement(name = "Bearer Authentication")
 public class BreedController {
 
     private final GetBreedByIdUseCase  getBreedByIdUseCase;
@@ -28,6 +33,7 @@ public class BreedController {
     private final BreedMapper breedMapper;
     private final GetBreedByQueryUseCase getBreedByQueryUseCase;
 
+    @Operation(summary = "Get breed by ID", description = "Returns a single cat breed by its TheCatAPI ID")
     @GetMapping("/{id}")
     public ResponseEntity<BreedDto> getBreedById(@PathVariable String id) {
         log.info("Getting breed by id {}", id);
@@ -45,6 +51,7 @@ public class BreedController {
         return ResponseEntity.ok(breedDto);
     }
 
+    @Operation(summary = "Get all breeds", description = "Returns a paginated list of cat breeds. Page and size are optional, default size is 10")
     @GetMapping()
     public ResponseEntity<PageResponseDto<BreedDto>> getBreeds(
             @PageableDefault(size = 10, page = 0) Pageable pageable){
@@ -59,6 +66,7 @@ public class BreedController {
 
     }
 
+    @Operation(summary = "Search breeds by query", description = "Returns a paginated list of cat breeds matching the given query. Page and size are optional, default size is 10")
     @GetMapping("/search")
     public ResponseEntity<PageResponseDto<BreedDto>> getBreedsByQuery(
             @RequestParam String query,

@@ -1,4 +1,4 @@
-package com.app.catapi.infrastructure.dataBase.mapper;
+package com.app.catapi.infrastructure.mapper;
 
 import com.app.catapi.application.dto.user.TokenDto;
 import com.app.catapi.domain.entity.user.Token;

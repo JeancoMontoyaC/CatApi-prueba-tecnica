@@ -1,4 +1,4 @@
-package com.app.catapi.infrastructure.dataBase.mapper;
+package com.app.catapi.infrastructure.mapper;
 
 import com.app.catapi.domain.entity.user.User;
 import com.app.catapi.infrastructure.dataBase.entity.UserEntity;

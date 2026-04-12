@@ -3,7 +3,7 @@ package com.app.catapi.infrastructure.database.mapper;
 import com.app.catapi.domain.entity.user.User;
 import com.app.catapi.domain.entity.user.UserRole;
 import com.app.catapi.infrastructure.dataBase.entity.UserEntity;
-import com.app.catapi.infrastructure.dataBase.mapper.UserMapper;
+import com.app.catapi.infrastructure.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
