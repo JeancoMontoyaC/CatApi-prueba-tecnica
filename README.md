@@ -45,7 +45,6 @@ spring.datasource.password=${DATA_BASE_PASSWORD}
 
 - **Paginación incluida:** Todos los endpoints que devuelven listas incluyen paginación. La respuesta tiene el siguiente formato:
 
-
 ```json
 {
     "content": [
@@ -71,10 +70,14 @@ Los parámetros `page` y `size` son opcionales en todos los endpoints. El tamañ
 
 - **Validaciones en register:** Ningún campo puede ser nulo. El email debe tener formato válido y la contraseña debe tener al menos 8 caracteres.
 
-- **Cobertura con Jacoco:** Para la cobertura decidio usar Jacoco utilizando el comando:
-```properties
+- **Base de datos PostgreSQL:** Se optó por PostgreSQL como base de datos relacional para la persistencia de usuarios.
+
+- **Cobertura con JaCoCo:** Se integró JaCoCo para medir la cobertura de tests, alcanzando un **71%**. Para correr los tests y generar el reporte:
+
+```bash
 mvn test
 ```
+
 ---
 
 ## Endpoints
@@ -174,3 +177,53 @@ Respuesta:
     "size": 3
 }
 ```
+
+---
+
+## Arquitectura
+
+El proyecto sigue una **arquitectura hexagonal (ports & adapters)** dividida en tres capas principales:
+
+```
+com.app.catapi
+├── domain
+├── application
+└── infrastructure
+```
+
+### Domain
+
+Núcleo de la aplicación, sin dependencias externas.
+
+- **entity:** Modelos de dominio (entidades puras).
+- **exception:** Excepciones de negocio personalizadas y el handler global de excepciones.
+- **ports:** Interfaces (contratos) que definen los repositorios. Incluye puertos para `breed`, `image` y `user`, además de dos puertos adicionales para la autenticación y el encoder de contraseñas.
+
+---
+
+### Application
+
+Orquesta la lógica de negocio usando los puertos definidos en el dominio.
+
+- **dto:** Objetos de transferencia de datos usados para las respuestas de la API.
+- **usecase:** Casos de uso organizados por dominio:
+  - `breed`: `GetBreedByIdUseCase`, `GetBreedByQueryUseCase`, `GetBreedsUseCase`
+  - `image`: `GetImagesByBreedIdUseCase`
+  - `user`: `LoginUserUseCase`, `RegisterUserUseCase`
+
+---
+
+### Infrastructure
+
+Contiene todos los detalles técnicos e implementaciones concretas.
+
+- **authentication:** Implementaciones de los puertos de autenticación y encoder de contraseñas. El encoder usa **BCrypt**.
+- **config:** Configuración del cliente HTTP para la conexión con TheCatAPI.
+- **controller:** Controladores REST que exponen los endpoints de la API.
+- **dataBase:** Todo lo relacionado con la persistencia en PostgreSQL, separado en:
+  - `entity`: Entidad JPA (`UserEntity`) que representa la tabla en base de datos.
+  - `persistance`: Implementación del repositorio (`UserRepositoryImpl`) que adapta el puerto del dominio.
+  - `repository`: Interfaz `UserJpaRepository` que extiende `JpaRepository` e interactúa directamente con la base de datos.
+- **externalApi:** Implementaciones de los repositorios de `breed` e `image` que consumen TheCatAPI.
+- **mapper:** Clases encargadas de transformar entre entidades de dominio, entidades JPA y DTOs.
+- **security:** Toda la configuración relacionada con JWT: generación, validación y filtros de seguridad.
