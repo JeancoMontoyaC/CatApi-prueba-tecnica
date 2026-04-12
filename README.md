@@ -45,6 +45,7 @@ spring.datasource.password=${DATA_BASE_PASSWORD}
 
 - **Paginación incluida:** Todos los endpoints que devuelven listas incluyen paginación. La respuesta tiene el siguiente formato:
 
+
 ```json
 {
     "content": [
@@ -70,6 +71,10 @@ Los parámetros `page` y `size` son opcionales en todos los endpoints. El tamañ
 
 - **Validaciones en register:** Ningún campo puede ser nulo. El email debe tener formato válido y la contraseña debe tener al menos 8 caracteres.
 
+- **Cobertura con Jacoco:** Para la cobertura decidio usar Jacoco utilizando el comando:
+```properties
+mvn test
+```
 ---
 
 ## Endpoints
