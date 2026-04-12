@@ -36,6 +36,14 @@ spring.datasource.password=${DATA_BASE_PASSWORD}
 ```
 
 ---
+## Swagger UI
+
+## Swagger UI
+
+La documentación interactiva de la API está disponible en Swagger UI. Puedes explorar y probar todos los endpoints directamente desde el navegador.
+
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
 
 ## Decisiones técnicas
 
