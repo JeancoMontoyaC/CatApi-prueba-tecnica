@@ -2,6 +2,7 @@ package com.app.catapi.application.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,7 +19,9 @@ public class UserDto {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
     @NotBlank(message = "First name is required")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚ\\s]+$", message = "First name can only contain letters and spaces")
     private String firstName;
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚ\\s]+$", message = "Last name can only contain letters and spaces")
     @NotBlank(message = "Last name is required")
     private String lastName;
 }
