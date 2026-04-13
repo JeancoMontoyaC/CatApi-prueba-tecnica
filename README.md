@@ -75,7 +75,7 @@ Los parámetros `page` y `size` son opcionales en todos los endpoints. El tamañ
 
 - **Límite de imágenes sin API Key:** El endpoint `images?breed_id` siempre devolverá 10 imágenes a menos que se configure `THE_CAT_API_KEY`.
 
-- **Autenticación por email:** Se decidió usar el email como identificador único para el login.
+- **Autenticación por email:** Se decidió usar el email como identificador único para el login, complementandolo con la restricción de Unique en la base de datos.
 
 - **Autenticación Bearer requerida:** Todos los endpoints excepto `/register` y `/login` requieren un token JWT en el header `Authorization: Bearer <token>`.
 
