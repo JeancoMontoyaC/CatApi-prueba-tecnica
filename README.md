@@ -10,7 +10,10 @@ REST API que consume [TheCatAPI](https://thecatapi.com/) con autenticación JWT,
 
 1. Reemplaza `THE_CAT_API_KEY` en el `docker-compose.yml` con tu clave de TheCatAPI para obtener mejores resultados (sin clave, la cantidad de imágenes por consulta estará limitada a 10).
 
-2. Desde la raíz del proyecto ejecuta:
+
+2. Reemplaza `SECRET_KEY` en el `docker-compose.yml` con tu clave secreta de cifrado de almenos 256 bits.
+
+3. Desde la raíz del proyecto ejecuta:
 
 ```bash
 docker-compose build
