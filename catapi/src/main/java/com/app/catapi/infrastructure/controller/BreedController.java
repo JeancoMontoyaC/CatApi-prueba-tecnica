@@ -12,6 +12,8 @@ import com.app.catapi.infrastructure.mapper.PageResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -35,19 +37,14 @@ public class BreedController {
 
     @Operation(summary = "Get breed by ID", description = "Returns a single cat breed by its TheCatAPI ID")
     @GetMapping("/{id}")
-    public ResponseEntity<BreedDto> getBreedById(@PathVariable String id) {
+    public ResponseEntity<BreedDto> getBreedById(
+            @PathVariable @Pattern(regexp = "^[a-z]+$", message = "Invalid breed ID format") String id) {
         log.info("Getting breed by id {}", id);
 
-        if (id == null || id.isEmpty()) {
-            log.warn("Invalid breed id");
-            return ResponseEntity.notFound().build();
-        }
-
         Breed breed = getBreedByIdUseCase.execute(id);
-
         BreedDto breedDto = breedMapper.toBreedDto(breed);
 
-        log.info("returning information of breed {}", breedDto);
+        log.info("returning information of breed with id {}", id);
         return ResponseEntity.ok(breedDto);
     }
 
@@ -61,7 +58,7 @@ public class BreedController {
                 pageable.getPageNumber(), pageable.getPageSize());
 
         PageResponseDto<BreedDto> pageResponseDto = pageResponseMapper.toBreedPageResponseDto(pageResponse);
-        log.info("Breeds found {}", pageResponseDto.getContent());
+        log.info("Breeds found");
         return ResponseEntity.ok(pageResponseDto);
 
     }
@@ -69,13 +66,16 @@ public class BreedController {
     @Operation(summary = "Search breeds by query", description = "Returns a paginated list of cat breeds matching the given query. Page and size are optional, default size is 10")
     @GetMapping("/search")
     public ResponseEntity<PageResponseDto<BreedDto>> getBreedsByQuery(
-            @RequestParam String query,
+            @RequestParam @NotBlank(message = "Query must not be blank") String query,
             @PageableDefault(size = 10, page = 0) Pageable pageable){
         log.info("Getting breeds by query {}", query);
-        PageResponse<Breed> pageResponse = getBreedByQueryUseCase.execute(query,
-                pageable.getPageSize(), pageable.getPageNumber());
-        PageResponseDto<BreedDto> pageResponseDto = pageResponseMapper.toBreedPageResponseDto(pageResponse);
-        log.info("Breeds found {}", pageResponseDto.getContent());
+
+        PageResponse<Breed> pageResponse = getBreedByQueryUseCase
+                .execute(query, pageable.getPageSize(), pageable.getPageNumber());
+        PageResponseDto<BreedDto> pageResponseDto = pageResponseMapper
+                .toBreedPageResponseDto(pageResponse);
+
+        log.info("Breeds found with query {}", query);
         return ResponseEntity.ok(pageResponseDto);
     }
 

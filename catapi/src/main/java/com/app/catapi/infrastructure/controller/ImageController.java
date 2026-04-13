@@ -9,6 +9,7 @@ import com.app.catapi.infrastructure.mapper.PageResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -32,18 +33,14 @@ public class ImageController {
     @GetMapping()
     @Operation(summary = "Get images by breed ID", description = "Returns a paginated list of cat images for the given breed ID. Page and size are optional, default size is 10")
     public ResponseEntity<PageResponseDto<ImageDto>> getImagesByBreedId(
-            @RequestParam String breed_id,
+            @RequestParam @NotBlank(message = "breed_id must not be blank") String breed_id,
             @PageableDefault(size = 10, page = 0) Pageable pageable){
         log.info("Getting images by breed id {}", breed_id);
 
-        if (breed_id == null || breed_id.isEmpty()) {
-            log.warn("Invalid breed id");
-            return ResponseEntity.notFound().build();
-        }
         PageResponse<Image> pageResponse = getImagesByBreedIdUseCase.execute(breed_id, pageable);
 
         PageResponseDto<ImageDto> pageResponseDto = pageResponseMapper.toImagePageResponseDto(pageResponse);
-        log.info("Images found {}", pageResponseDto.getContent());
+        log.info("Images found with breed_id {}", breed_id);
         return ResponseEntity.ok(pageResponseDto);
     }
 }
